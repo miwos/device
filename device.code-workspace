@@ -1,0 +1,30 @@
+{
+  "folders": [
+    { "path": "firmware" },
+    { "path": "lua" },
+
+  ],
+  "settings": {
+    "cSpell.words": [
+      "checkinteger",
+      "checkstring",
+      "dostring",
+      "getfield",
+      "getglobal",
+      "isfunction",
+      "islightfunction",
+      "istable",
+      "loadfile",
+      "newstate",
+      "newtable",
+      "openlibs",
+      "pcall",
+      "pushstring",
+      "rawgeti",
+      "rawseti",
+      "REGISTRYINDEX",
+      "settop",
+      "toboolean"
+    ]
+  }
+}

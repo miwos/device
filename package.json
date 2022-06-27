@@ -1,0 +1,19 @@
+{
+  "name": "device",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "cd lua && node scripts/sync.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@miwos/bridge": "link:..\\bridge\\app",
+    "chokidar": "^3.5.3",
+    "colorize-template": "^1.0.0",
+    "picocolors": "^1.0.0"
+  }
+}

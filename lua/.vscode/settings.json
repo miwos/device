@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "[lua]": {
+    "editor.defaultFormatter": "JohnnyMorganz.stylua"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "Lua.diagnostics.globals": ["FileSystem"]
+}
