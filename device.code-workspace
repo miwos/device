@@ -19,6 +19,7 @@
       "newtable",
       "openlibs",
       "pcall",
+      "pushinteger",
       "pushstring",
       "rawgeti",
       "rawseti",
