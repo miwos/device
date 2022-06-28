@@ -70,27 +70,45 @@ namespace Lua {
           "  return _LOADED[moduleName]\n"
           "end\n"));
     }
-
-    void setupFunctionTable() {
-      lua_newtable(L); // create table for functions
-      functionTableIndex = luaL_ref(L, LUA_REGISTRYINDEX);
-    }
   } // namespace
 
-  int storeFunction(const char *name) {
-    lua_rawgeti(L, LUA_REGISTRYINDEX, functionTableIndex);
-    lua_getglobal(L, name);
-    int ref = luaL_ref(L, -2);
+  int storeFunction(const char *tableName, const char *functionName) {
+    lua_getglobal(L, tableName);
+    if (!lua_istable(L, -1)) {
+      lua_pop(L, 1); // Remove the table.
+      return -1;
+    }
+
+    lua_getfield(L, -1, functionName);
+    lua_remove(L, -2); // Remove the table.
+
+    if (!isFunction(functionName, -1, false)) {
+      lua_pop(L, 1); // Remove the function.
+      return -1;
+    }
+
+    int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_pop(L, 1); // Remove the function.
+    return ref;
+  }
+
+  int storeFunction(const char *functionName) {
+    lua_getglobal(L, functionName);
+
+    if (!lua_isfunction(L, -1) && !lua_islightfunction(L, -1)) {
+      // Remove the (nil) function.
+      lua_pop(L, 1);
+      return -1;
+    }
+
+    int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    // Remove the function.
     lua_pop(L, 1);
     return ref;
   }
 
   bool getFunction(int ref, bool shouldLogError = true) {
-    lua_rawgeti(L, LUA_REGISTRYINDEX, functionTableIndex);
-    lua_rawgeti(L, -1, ref);
-
-    // Remove the function table.
-    lua_remove(L, -2);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 
     if (!lua_isfunction(L, -1) && !lua_islightfunction(L, -1)) {
       if (shouldLogError) {
@@ -148,9 +166,7 @@ namespace Lua {
     L = luaL_newstate();
     luaL_openlibs(L);
     lua_settop(L, 0);
-
     addPolyfills();
-    setupFunctionTable();
 
     if (handleSetup != NULL) handleSetup();
   }
