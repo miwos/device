@@ -6,7 +6,7 @@ describe('isArray', function()
   end)
 
   it('handles strings', function()
-    expect(utils.isArray('string')):toBe(true)
+    expect(utils.isArray('string')):toBe(false)
   end)
 
   it('handles tables', function()
@@ -14,7 +14,7 @@ describe('isArray', function()
   end)
 
   it('handles arrays', function()
-    expect(utils.isArray({ 1, 2, 3 })):toBe(false)
+    expect(utils.isArray({ 1, 2, 3 })):toBe(true)
   end)
 end)
 
