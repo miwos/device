@@ -4,6 +4,7 @@
 #include <Lua.h>
 #include <LuaFileSystem.h>
 #include <LuaLog.h>
+#include <LuaTimer.h>
 #include <SlipSerial.h>
 
 SlipSerial serial(Serial);
@@ -22,7 +23,11 @@ void setup() {
   Lua::onSetup([]() {
     LuaLog::install();
     LuaFileSystem::install();
+    LuaTimer::install();
   });
 }
 
-void loop() { Bridge::update(); }
+void loop() {
+  Bridge::update();
+  LuaTimer::update();
+}
