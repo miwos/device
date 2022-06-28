@@ -48,3 +48,13 @@ function Log.dump(...)
 
   Log._log(LogType.Dump, '{' .. dump .. '}')
 end
+
+local timers = {}
+function Log.time(label)
+  timers[label] = Timer.now()
+end
+
+function Log.timeEnd(label)
+  Log.info(label .. ': ' .. Timer.now() - timers[label] .. 'μs')
+  timers[label] = nil
+end
