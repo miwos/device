@@ -19,6 +19,7 @@ local function reset()
     tests = { total = 0, failed = 0 },
   }
 end
+reset()
 
 local function printIndent(text, _depth)
   print(utils.indent(_depth ~= nil and _depth or depth) .. text)
@@ -62,6 +63,34 @@ function assertions:toBe(value)
       )
     )
   end
+end
+
+function assertions:toBeCalled()
+  if not self.value.wasCalled then
+    fail()
+    printIndent(
+      '{gray {italic expect(}}{error Testing.fn()}{gray {italic ):toBeCalled()}} \n'
+    )
+  end
+end
+
+function assertions:notToBeCalled()
+  if self.value.wasCalled then
+    fail()
+    printIndent(
+      '{gray {italic expect(}}{error Testing.fn()}{gray {italic ):{underline not}ToBeCalled()}} \n'
+    )
+  end
+end
+
+local mockFunctionMeta = {
+  __call = function(self, ...)
+    self.wasCalled = true
+    self.args = { ... }
+  end,
+}
+local function createMockFunction()
+  return setmetatable({ wasCalled = false, args = {} }, mockFunctionMeta)
 end
 
 local function runFile(fileName)
@@ -149,4 +178,5 @@ Testing = {
   runFile = runFile,
   runDir = runDir,
   getSummary = getSummary,
+  fn = createMockFunction,
 }
